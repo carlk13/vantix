@@ -30,7 +30,8 @@ class vantixLoader(IterableDataset):
             np_batch = load_images_fast(batch_paths, self.width, self.height, self.augment)
             
             # Zero-copy conversion to Torch
-            yield torch.from_numpy(np_batch)
+            tensor = torch.from_numpy(np_batch)
+            yield tensor.pin_memory() 
 
     def __len__(self):
         return (len(self.image_paths) + self.batch_size - 1) // self.batch_size
