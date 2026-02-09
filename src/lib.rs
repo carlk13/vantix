@@ -5,6 +5,7 @@ use std::path::Path;
 use fast_image_resize::{ResizeAlg, Resizer, ResizeOptions, images::Image as FastImage, PixelType};
 use rand::prelude::*;
 
+
 #[pyfunction]
 fn load_images_fast<'py>(
     py: Python<'py>,
@@ -18,23 +19,30 @@ fn load_images_fast<'py>(
     let area = (width * height) as usize;
     let total_floats = batch_size * 3 * area;
 
-    // Zeroed memory
+    // Allocate memory 
     let mut buffer = vec![0.0f32; total_floats];
 
-    // Parallel Processing
-    buffer.par_chunks_exact_mut(3 * area)
-        .zip(paths.par_iter())
-        .for_each(|(chunk, path)| {
-            process_single_image(path, width, height, augment, chunk, area);
-        });
+    // Release GIL 
+    {
+        let buffer_slice = buffer.as_mut_slice();
+        let paths_slice = &paths;
 
+        py.allow_threads(move || {
+            buffer_slice.par_chunks_exact_mut(3 * area)
+                .zip(paths_slice.par_iter())
+                .for_each(|(chunk, path)| {
+                    process_single_image(path, width, height, augment, chunk, area);
+                });
+        });
+    }
+
+    // Re-acquire GIL to create NumPy array
     let array_1d = buffer.into_pyarray(py);
-    
-    // Reshape to (N, C, H, W)
     let reshaped = array_1d.reshape([batch_size, 3, height as usize, width as usize])?;
 
     Ok(reshaped)
 }
+
 
 fn process_single_image(
     path: &str, 
