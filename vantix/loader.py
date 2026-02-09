@@ -14,6 +14,8 @@ class vantixLoader(IterableDataset):
         self.batch_size = batch_size
         self.augment = augment
         self.shuffle = shuffle
+
+        self.pin = torch.cuda.is_available()
         
     def __iter__(self):
         indices = np.arange(len(self.image_paths))
@@ -30,7 +32,11 @@ class vantixLoader(IterableDataset):
             np_batch = load_images_fast(batch_paths, self.width, self.height, self.augment)
             
             # Zero-copy conversion to Torch
-            yield torch.from_numpy(np_batch)
+            tensor = torch.from_numpy(np_batch)
+            if self.pin:
+                tensor = tensor.pin_memory()
+                
+            yield tensor
 
     def __len__(self):
         return (len(self.image_paths) + self.batch_size - 1) // self.batch_size
