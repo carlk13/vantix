@@ -108,7 +108,7 @@ fn process_single_image(
 }
 
 #[pymodule]
-fn _vantix(m: &Bound<'_, PyModule>) -> PyResult<()> {
+fn vantix_core(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(load_images_fast, m)?)?;
     Ok(())
 }

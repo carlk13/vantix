@@ -14,3 +14,5 @@ Vantix replaces standard PyTorch DataLoaders by shifting image decoding, resizin
 Available soon via 
 ```bash
 pip install vantix
+```
+

@@ -11,3 +11,26 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dynamic = ["version"]
+dependencies = [
+    "numpy",
+    "pandas>=2.0.3",
+    "pytest>=8.3.5",
+    "ruff>=0.15.1",
+    "torch>=2.5.1",
+    "torchvision>=0.20.1",
+    "tqdm>=4.67.3",
+]
+
+[tool.maturin]
+python-source = "python"
+module-name = "vantix.vantix_core"
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+torchvision = { index = "pytorch-cpu" }
