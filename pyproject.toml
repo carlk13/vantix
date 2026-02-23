@@ -4,13 +4,20 @@ build-backend = "maturin"
 
 [project]
 name = "vantix"
+version = "0.1.0"
+description = "A blazingly fast Rust-powered image loader for Python."
+readme = "README.md"
+authors = [
+    {name = "Carl Kemmerich"}
+]
+license = {text = "MIT"}
 requires-python = ">=3.8"
 classifiers = [
     "Programming Language :: Rust",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
+    "License :: OSI Approved :: MIT License",
 ]
-dynamic = ["version"]
 dependencies = [
     "numpy",
     "pandas>=2.0.3",
