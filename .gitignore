@@ -9,6 +9,9 @@ target
 .python-version
 .github 
 
+# Rust generated files
+vantix_core* 
+
 # Virtual environments
 .venv
 
