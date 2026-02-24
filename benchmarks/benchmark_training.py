@@ -10,8 +10,6 @@ from torchvision import datasets, transforms, models
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-# Configure logging
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
@@ -51,8 +49,6 @@ def get_image_paths(root_dir):
 
 
 # --- Model Definitions ---
-
-
 class SimpleMLP(nn.Module):
     def __init__(self, input_size=128 * 128 * 3, num_classes=10):
         super(SimpleMLP, self).__init__()
