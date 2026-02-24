@@ -9,10 +9,12 @@ target
 .python-version
 .github 
 
+# Rust generated files
+vantix_core* 
+
 # Virtual environments
 .venv
 
 #data
 bench_data
 data
-benchmark_*

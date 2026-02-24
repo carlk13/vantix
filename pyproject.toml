@@ -4,16 +4,24 @@ build-backend = "maturin"
 
 [project]
 name = "vantix"
+version = "0.1.0"
+description = "A blazingly fast Rust-powered image loader for Python."
+readme = "README.md"
+authors = [
+    {name = "Carl Kemmerich"}
+]
+license = {text = "MIT"}
 requires-python = ">=3.8"
 classifiers = [
     "Programming Language :: Rust",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
+    "License :: OSI Approved :: MIT License",
 ]
-dynamic = ["version"]
 dependencies = [
     "numpy",
     "pandas>=2.0.3",
+    "psutil>=7.2.2",
     "pytest>=8.3.5",
     "ruff>=0.15.1",
     "torch>=2.5.1",
@@ -24,6 +32,12 @@ dependencies = [
 [tool.maturin]
 python-source = "python"
 module-name = "vantix.vantix_core"
+exclude = [
+    "assets/*",
+    "benchmarks/*",
+    "tests/*",
+    "status.txt"
+]
 
 [[tool.uv.index]]
 name = "pytorch-cpu"
