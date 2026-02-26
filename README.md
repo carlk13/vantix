@@ -1,8 +1,8 @@
-# Vantix
+# VantixLoader
 
 **A fast image loader for Python, built in Rust.**
 
-PyTorch's `DataLoader` is fine, but it hits a wall pretty fast when you have a lot of images — the Python GIL and slow JPEG decoding eat up a huge chunk of your GPU's potential throughput. Vantix moves all of that work (decoding, resizing, normalizing) into a multi-threaded Rust backend, hands you a ready-to-use `float32` tensor, and gets out of the way. On some workloads it's over **9× faster** than a standard PyTorch pipeline.
+PyTorch's `DataLoader` is fine, but it hits a wall pretty fast when you have a lot of images — the Python GIL and slow JPEG decoding eat up a huge chunk of your GPU's potential throughput. VantixLoader moves all of that work (decoding, resizing, normalizing) into a multi-threaded Rust backend, hands you a ready-to-use `float32` tensor, and gets out of the way. On some workloads it's over **9× faster** than a standard PyTorch pipeline.
 
 ## How it works
 
@@ -11,7 +11,7 @@ The Rust core (`src/lib.rs`) uses:
 - **`fast_image_resize`** — SIMD-accelerated resizing (AVX2 on x86, NEON on ARM) so bilinear resize is basically free
 - **`pyo3` + `numpy`** — the output buffer is handed back to Python as a NumPy array with zero extra copies
 
-On the Python side, `VantixLoader` (`python/vantix/loader.py`) wraps everything in a prefetch queue: a background thread keeps up to 3 batches queued so your training loop never waits on I/O. It also supports PyTorch DDP (multi-GPU) out of the box by sharding indices across ranks.
+On the Python side, `VantixLoader` (`python/vantixloader/loader.py`) wraps everything in a prefetch queue: a background thread keeps up to 3 batches queued so your training loop never waits on I/O. It also supports PyTorch DDP (multi-GPU) out of the box by sharding indices across ranks.
 
 ## Features
 
@@ -24,19 +24,14 @@ On the Python side, `VantixLoader` (`python/vantix/loader.py`) wraps everything 
 
 ## Quick start
 
-### Install (from source, for now)
-
-You need Rust and `maturin` installed first:
+### Install
 
 ```bash
-pip install maturin
-maturin develop --release
-```
-
-Once it's published on PyPI:
-
-```bash
+# pip
 pip install vantixloader
+
+# uv
+uv add vantixloader
 ```
 
 ### Basic usage
@@ -78,7 +73,7 @@ for batch in loader:
 
 See [`BENCHMARK.md`](BENCHMARK.md) for full results. Short version:
 
-| Dataset | PyTorch (img/s) | Vantix (img/s) | Speedup |
+| Dataset | PyTorch (img/s) | VantixLoader (img/s) | Speedup |
 |---|---|---|---|
 | CIFAR-Like (32 px) | ~1 750 | ~16 400 | **~9.4×** |
 | ImageNet (224 px) | ~420 | ~1 020 | **~2.4×** |
@@ -105,7 +100,7 @@ Charts are saved to `assets/`.
 ## Project structure
 
 ```
-vantix/
+vantixloader/
 ├── src/lib.rs                  # Rust core: parallel decode, resize, normalize
 ├── python/vantixloader/
 │   ├── __init__.py
