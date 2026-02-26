@@ -1,6 +1,6 @@
 [package]
-name = "vantix"
-version = "0.1.0"
+name = "vantixloader"
+version = "0.1.1"
 edition = "2024"
 description = "A blazingly fast Rust-powered image loader for Python."
 authors = ["Carl Kemmerich"]

@@ -3,8 +3,8 @@ requires = ["maturin>=1.11,<2.0"]
 build-backend = "maturin"
 
 [project]
-name = "vantix"
-version = "0.1.0"
+name = "vantixloader"
+version = "0.1.1"
 description = "A blazingly fast Rust-powered image loader for Python."
 readme = "README.md"
 authors = [
@@ -31,7 +31,7 @@ dependencies = [
 
 [tool.maturin]
 python-source = "python"
-module-name = "vantix.vantix_core"
+module-name = "vantixloader.vantix_core"
 exclude = [
     "assets/*",
     "benchmarks/*",
