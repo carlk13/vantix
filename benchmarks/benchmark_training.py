@@ -98,7 +98,7 @@ def get_mobilenet():
 
 # Define model configurations
 MODEL_CONFIGS = [
-    {"name": "Small_MLP", "epochs": 10, "factory": lambda: SimpleMLP()},
+    {"name": "Small_MLP", "epochs": 5, "factory": lambda: SimpleMLP()},
     {"name": "Medium_CNN", "epochs": 5, "factory": lambda: SimpleCNN()},
     {"name": "Large_MobileNetV3", "epochs": 2, "factory": get_mobilenet},
 ]
@@ -142,9 +142,6 @@ def train_loop(loader_name, loader, model, criterion, optimizer, epochs):
                 optimizer.step()
 
                 total_images_processed += data.size(0)
-
-                # Optional: Update postfix with loss or valid accuracy if we were calculating it
-                # pbar.set_postfix({'loss': loss.item()})
 
     if DEVICE == "cuda":
         torch.cuda.synchronize()
@@ -253,7 +250,7 @@ def main():
         "--models",
         nargs="+",
         choices=[c["name"] for c in MODEL_CONFIGS],
-        help="Specify which models to evaluate. If omitted, all models are evaluated. Supports one or multiple models (e.g. --models Small_MLP Medium_CNN).",
+        help="Specify which models to evaluate. If omitted, all models are evaluated.",
     )
     args = parser.parse_args()
 

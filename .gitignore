@@ -18,3 +18,4 @@ vantix_core*
 #data
 bench_data
 data
+throughput_*
